@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta charset="utf-8">
+        <title>Ouvido</title>
+        <script type='text/javascript' src='https://www.midijs.net/lib/midi.js'></script>
+        <script>
+            window.onload = function(){
+
+                const notes={
+                    'C': 60,
+                    'C#': 61,
+                    'D': 62,
+                    'D#': 63,
+                    'E': 64,
+                    'F': 65,
+                    'F#': 66,
+                    'G': 67,
+                    'G#': 68,
+                    'A': 69,
+                    'A#': 70,
+                    'B': 71
+                }
+                    
+                const bt_tocar = document.getElementById("bt_tocar");
+                const bt_parar = document.getElementById("bt_parar");
+
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc1 = audioCtx.createOscillator();                                
+                osc1.type = 'sine';
+                osc1.frequency.value = 130.81 / 2;                                                
+
+                const osc2 = audioCtx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.value = 130.81 / 2;                       
+                
+                const osc3 = audioCtx.createOscillator();                         
+                osc3.type = 'sine';
+                osc3.frequency.value = 130.81 / 2;                                                
+
+                let bootstrap = true;
+                let playing = false;
+
+                let seq = ['C','E','G','E','C','F','B']
+                let current = 0;
+                console.log(seq);
+
+                let playNext = function(){ 
+                    if(playing && current < seq.length){
+                        let note = seq[current++];                        
+                        let midiVal = notes[note];
+                        console.log(current, note, midiVal);
+                        MIDIjs.noteOn(0,midiVal,50);
+                        setTimeout(playNext, 1000);
+                    }else{
+                        MIDIjs.stop();
+                    }
+                }
+
+                bt_tocar.onclick = function(){
+                    if(bootstrap){
+                        bootstrap = false;
+                        osc1.start();
+                        osc2.start();
+                        osc3.start();
+                    }
+
+                    if(!playing){                        
+                        osc1.connect(audioCtx.destination);
+                        osc2.connect(audioCtx.destination);
+                        osc3.connect(audioCtx.destination);                        
+                        playing = true;
+                        current = 0;
+                        playNext();
+                    }                    
+                };
+                
+                bt_parar.onclick = function(){
+                    if(playing){                        
+                        osc1.disconnect(audioCtx.destination);
+                        osc2.disconnect(audioCtx.destination);
+                        osc3.disconnect(audioCtx.destination);
+                        playing = false;
+                    }
+                    //MIDIjs.stop();                    
+                };                
+            };
+
+
+        </script>
+    </header>
+    <body>
+        <button id="bt_tocar">Tocar</button>
+        <button id="bt_parar">Parar</button>        
+    </body>
+</html>
