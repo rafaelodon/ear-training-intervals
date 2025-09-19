@@ -1,0 +1,119 @@
+:root{
+    --green: #4CAF50;
+    --red: #DC143C;
+    --light-grey: #CCC;
+    --dark-grey: #999;
+}
+
+html{
+    font-family: sans-serif;
+    line-height: 2em;
+    zoom: 120%;
+}
+h1{
+    text-align: center;
+}
+label {
+    margin-right:0.5em;                
+}
+#display{                
+    border-radius: 0.3em;
+    background-color: var(--light-grey);
+    padding: 1em;
+    font-size: 1.5em;                
+}
+#display span{
+    font-weight: bold;
+    border: 1px solid white;
+    background: var(--dark-grey);
+    color: white;
+    border-radius: 0.2em;
+    padding: 0.2em;
+    width: 1.5em;
+    margin-right: 0.2em;
+    margin-bottom: 0.2em;
+    display: inline-block;                
+    text-align: center;
+}
+#display span.correct{
+    border: none;
+    background-color: var(--green);
+}
+#display span.incorrect{
+    border: none;
+    background-color: var(--red);
+}
+button{
+    font-size: 1.5em;
+    padding: 0.3em;
+    border-radius: 0.2em;
+    border: none;
+    background-color: var(--light-grey);
+    color: black;
+}
+#startStop{
+    text-align: center;
+    margin-bottom: 1em;
+}
+#buttons{
+    margin: 1em 0 1em 0;
+    text-align: center;
+}
+#options{
+    margin-top: 1em
+}
+#buttons button{                
+    margin-right: 0.2em;
+    margin-bottom: 0.2em;                
+    width: 2.2em;
+}
+
+button:hover{
+    background: var(--dark-grey);
+}
+
+#buttons button.selected{                
+    background: var(--green);
+    color: white;
+    font-weight: bold;
+}
+
+#progressBar{
+    width: 100%;
+    height: 20px;
+    background-color: var(--light-grey);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1em 0 1em 0;
+}
+
+#fill{
+    height: 100%;
+    width: 0%;
+    background-color: var(--green);
+    border-radius: 10px;
+    transition: width linear;
+}
+
+.tooltip {          
+    position: relative;
+    display: inline-block;      
+    cursor: pointer;    
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: var(--green) !important;
+    color: #fff;
+    line-height: 0.7em !important;
+    position: absolute;
+    z-index: 1;
+    bottom: 55%;
+    left: 55%;
+    font-size: 0.7em;
+    width: 1em !important;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
