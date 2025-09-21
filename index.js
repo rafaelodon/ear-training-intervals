@@ -267,20 +267,24 @@ window.onload = function(){
                     
     renderTonalities();
     renderIntervalGroups();
-    renderIntervalOptions();  
-    loadInstruments();              
+    renderIntervalOptions();    
              
-    function loadInstruments(){
+    function loadInstruments(callback){
+                
         var audioContext = new AudioContext();                
-        Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((instrument) => {
-            state.piano = instrument;
+        Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((piano) => {
+            state.piano = piano;
             console.log("Piano loaded...");                        
+        
+            Soundfont.instrument(audioContext, 'drawbar_organ').then((organ) => {
+                state.organ = organ;          
+                console.log("Organ loaded...");
+
+                callback();
+            });
+
         });
 
-        Soundfont.instrument(audioContext, 'drawbar_organ').then((instrument) => {
-            state.organ = instrument;          
-            console.log("Organ loaded...");
-        });
     }
 
     function playDrone(){
@@ -320,19 +324,25 @@ window.onload = function(){
     }
 
     function startPlaying(){
-        if(!state.playing){                        
-            state.init();   
-            updateSize();
-            updateTempo();
-            updateTonality();
-            updateIntervalsAvailable();
-            renderIntervalButtons();                        
-            createRandomSequence();
 
-            state.playing = true;
-            playDrone();
-            setTimeout(playNext, state.delay);                        
-            updateScreen();
+        if(state.piano == undefined || state.organ == undefined){
+            divDisplay.innerHTML = "Loading..."
+            loadInstruments(startPlaying);
+        }else{
+            if(!state.playing){
+                state.init();   
+                updateSize();
+                updateTempo();
+                updateTonality();
+                updateIntervalsAvailable();
+                renderIntervalButtons();                        
+                createRandomSequence();
+
+                state.playing = true;
+                playDrone();
+                setTimeout(playNext, state.delay);                        
+                updateScreen();
+            }
         }
     }
 
